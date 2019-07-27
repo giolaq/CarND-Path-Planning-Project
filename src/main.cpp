@@ -114,6 +114,7 @@ int main() {
 								car_s = end_path_s;
 							}
 
+							// Prediction
 							bool is_too_close = false;
 							bool is_right_available = false;
 							bool is_left_available = false;
@@ -158,8 +159,9 @@ int main() {
 							else if (velocity_reference < 49.5) {
 								velocity_reference += .224;
 							}
+							// End Prediction
 
-
+							// Trajectory generation
 							vector<double> waypointsx;
 							vector<double> waypointsy;
 
@@ -218,7 +220,6 @@ int main() {
  
 							tk::spline spline;
 
-
 							spline.set_points(waypointsx, waypointsy);
 
 							for (int i = 0; i < previous_path_x.size(); i++) {
@@ -251,6 +252,7 @@ int main() {
 								next_x_vals.push_back(x_point);
 								next_y_vals.push_back(y_point);
 							}
+							// End trajectory genaration
 
 							msgJson["next_x"] = next_x_vals;
 							msgJson["next_y"] = next_y_vals;

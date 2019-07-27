@@ -111,35 +111,24 @@ Note: regardless of the changes you make, your project must be buildable using
 cmake and make!
 
 
-## Call for IDE Profiles Pull Requests
+## Reflection
 
-Help your fellow students!
+This Path Planning algorithm is base on 2 phase, Prediction and Trajectory Generation
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to ensure
-that students don't feel pressured to use one IDE or another.
+### Prediction [line 117 to line 162](./src/main.cpp#L117)
+In this part the code use the data from telemetry and sensor fusion.
+It checks if there is a car in front of the reference car, to the left or to the right
+This part of the code deal with the telemetry and sensor fusion data.
+If a car is less than 30 meters in front or behind the reference car is considered dangerous.
 
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
+### Behavior and Trajectory generation [line 164 to line 255](./src/main.cpp#L164)
+According to the prediction before a trajectory is generated for the reference car expressing the
+lange change or the speed change.
 
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
+This part decides what to do:
+  - If we have a car in front of us, do we change lanes?
+  - Do we speed up or slow down?
 
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
+Based on the prediction of the situation we are in, this code increases the speed, decrease speed, or make a lane change when it is safe. Instead of increasing the speed at this part of the code, a `speed_diff` is created to be used for speed changes when generating the trajectory in the last part of the code. This approach makes the car more responsive acting faster to changing situations like a car in front of it trying to apply breaks to cause a collision.
 
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
+In order to ensure more continuity on the trajectory it uses spline.
